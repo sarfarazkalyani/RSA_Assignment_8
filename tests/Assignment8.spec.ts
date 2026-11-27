@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../pages/login";
 import { getCredentials } from "../utils/credentials";
-
+import { MyBookingsPage } from "../pages/mybookings";
 
 test("Login into EventHub", async ({ page }) => {
   const { email, password } = getCredentials();
@@ -31,7 +31,8 @@ test("Booking an Event", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Booking Confirmed" })).toBeVisible();
   const bookingReference = await page.locator(".booking-ref").innerText();
   await page.getByRole("button", { name: "View My Bookings" }).click();
-  const bookingCard = page.getByTestId("booking-card").filter({ hasText: bookingReference });
+  const myBookingsPage = new MyBookingsPage(page);
+  const bookingCard = myBookingsPage.findBookingCard(bookingReference);
   await expect(bookingCard.getByText("confirmed", { exact: true })).toBeVisible();
   await bookingCard.getByRole("button", { name: "View Details" }).click();
   await expect(page.getByRole("main").getByRole("navigation")).toContainText(bookingReference);
