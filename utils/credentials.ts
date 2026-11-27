@@ -8,7 +8,7 @@ function getCredentials(): Credentials {
     const password = process.env.PASSWORD;
     if (!email || !password) {
         throw new Error(
-            "Set EVENTHUB_EMAIL and EVENTHUB_PASSWORD before running the test.",
+            "Set EMAIL and PASSWORD before running the test.",
         );
     }
     return { email, password };
